@@ -2,12 +2,7 @@
   "dependencies": {
     "mssql1": {
       "type": "mssql",
-      "connectionId": "ConnectionStrings:ServiceManager",
-      "dynamicId": null
-    },
-    "secrets1": {
-      "type": "secrets",
-      "connectionId": null
+      "connectionId": "ConnectionStrings:CoCWebFormContext"
     }
   }
 }

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoCWebForm", "CoCWebForm.csproj", "{03BDA17A-91A3-46EA-B775-BC262CC78411}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoCWebForm", "CoCWebForm.csproj", "{3B51D9FA-BA0C-4D27-8BD3-EF52E416A32F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{03BDA17A-91A3-46EA-B775-BC262CC78411}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{03BDA17A-91A3-46EA-B775-BC262CC78411}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{03BDA17A-91A3-46EA-B775-BC262CC78411}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{03BDA17A-91A3-46EA-B775-BC262CC78411}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B51D9FA-BA0C-4D27-8BD3-EF52E416A32F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B51D9FA-BA0C-4D27-8BD3-EF52E416A32F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B51D9FA-BA0C-4D27-8BD3-EF52E416A32F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B51D9FA-BA0C-4D27-8BD3-EF52E416A32F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {F9856885-7456-4D66-B522-613CC71591CF}
+		SolutionGuid = {B8CC6458-98C1-449D-BDEB-0811421E3783}
 	EndGlobalSection
 EndGlobal
