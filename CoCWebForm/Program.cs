@@ -1,9 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using CoCWebForm.Data;
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<CoCWebFormContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("CoCWebFormContext") ?? throw new InvalidOperationException("Connection string 'CoCWebFormContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -27,6 +22,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Login}/{action=Index}");
 
 app.Run();

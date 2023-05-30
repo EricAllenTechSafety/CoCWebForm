@@ -1,0 +1,85 @@
+﻿@model CoCWebForm.Models.CoCDataModel
+@{  
+    ViewBag.Title = "CoC Form";  
+} 
+<h2> Chain of Custody Form </h2> 
+<body>
+    <form method="post">
+        <fieldset>
+            <h5>Work Order: {WorkOrderId}</h5>
+            <p><div>
+                <label for="ServiceOrder">Project ID:</label>
+                <input type="text" name="ServiceOrder" value="" />
+            </div></p>
+            <p><div>
+                <label for="TestCodes">Test Code:</label>
+                <select name="TestCodes" id="TestCodes">
+                    <option value="tbd1">TBD</option>
+                    <option value="tbd2">TBD_2</option>
+                    <option value="tbd3">TBD_3</option>
+                    <option value="tbd4">TBD_4</option>
+                </select>
+            </div></p>
+            <p><div>
+                <label for="TssOffice">Special Instructions:</label><br />
+                <textarea name="TssOffice" rows="4" cols="50"></textarea>
+            </div></p>
+            <p><div>
+                <label for="TssOffice">TSS Office of Origin:</label>
+                <input type="text" name="TssOffice" value="" />
+            </div></p>
+            <p><div>
+                <label for="samples">Samples:</label>
+                <table class="table table-hover">
+                    <tbody id="samples">
+                        <tr>
+                            <th>Sample ID</th>
+                            <th>Media Type</th>
+                            <th>ISO Class</th>
+                            <th>Sample Type</th>
+                            <th>Media Lot #</th>
+                            <th>Sample Volume/Measure</th>
+                        </tr>
+                            @*@foreach (var sample in Model.Samples)
+                            {
+                                <tr>
+                                    <td>@sample.SampleId</td>
+                                    <td>@sample.MediaType</td>
+                                    <td>@sample.IsoClass</td>
+                                    <td>@sample.SampleType</td>
+                                    <td>@sample.MediaLotNumber</td>
+                                    <td>@sample.SampleVol</td>
+                                </tr>
+                            }*@
+                    </tbody>
+                </table>
+                <input type="button" id="addSample" name="addSample" value="Add Sample" />
+            </div></p>
+            <br />
+            <p><div>
+                <label for="SamplesDate">Sample Collection Date:</label>
+                <input type="date" name="SamplesDate" value="" />
+            </div></p>
+            <p><div>
+                <label for="ViableSampler">Viable Sampler:</label>
+                <input type="text" name="ViableSampler" value="" />
+            </div></p>
+            <p><div>
+                <label for="TechnicianName">Technician Name (eSignature):</label>
+                <input type="text" name="TechnicianName" value="" />
+            </div></p>
+            <p><div>
+                <label for="eSignDate">eSignature Date:</label>
+                <input type="date" name="eSignDate" value="" />
+            </div></p>
+            <p><div>
+                <label for="TrackingNumber">Tracking Number:</label>
+                    <input type="text" name="TrackingNumber" cols="50" value="" />
+            </div></p>
+            <p><div>
+                <label>&nbsp;</label>
+                <input type="submit" value="Submit" class="submit" />
+            </div></p>
+        </fieldset>
+    </form>
+</body>
