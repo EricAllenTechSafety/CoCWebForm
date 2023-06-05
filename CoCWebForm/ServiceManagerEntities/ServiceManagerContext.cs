@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity.Infrastructure;
 using System.Data.Entity;
+using CoCWebForm.ServiceManagerEntities.ServiceManagerModels;
 
 namespace CoCWebForm.ServiceManagerEntities
 {
@@ -17,7 +18,7 @@ namespace CoCWebForm.ServiceManagerEntities
 
         //public virtual DbSet<DAT_ALERTS> DAT_ALERTS { get; set; }
         //public virtual DbSet<DAT_AUDIT_TRAILS> DAT_AUDIT_TRAILS { get; set; }
-        //public virtual DbSet<DAT_CONTACTS> DAT_CONTACTS { get; set; }
+        public virtual DbSet<DAT_CONTACTS> DAT_CONTACTS { get; set; }
         //public virtual DbSet<DAT_CUSTOMERS> DAT_CUSTOMERS { get; set; }
         //public virtual DbSet<DAT_FEEDBACK_ACTION_ITEMS> DAT_FEEDBACK_ACTION_ITEMS { get; set; }
         //public virtual DbSet<DAT_FEEDBACK_MEETING_ROSTERS> DAT_FEEDBACK_MEETING_ROSTERS { get; set; }

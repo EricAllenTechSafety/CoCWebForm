@@ -1,8 +1,11 @@
-﻿namespace CoCWebForm.ServiceManagerEntities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CoCWebForm.ServiceManagerEntities.ServiceManagerModels
 {
     public partial class DAT_ORDERS
     {
-        public Guid ID { get; set; }
+        [Key]
+        public Guid ORDER_ID { get; set; }
         public string REGION_ID { get; set; }
         public string PROJECT_ID { get; set; }
         public string ORDER_NUMBER { get; set; }
@@ -66,9 +69,5 @@
         public long? PROJECT_MANAGER_ID { get; set; }
         public bool? IS_OVERRIDE_MINIMUM_PRICE { get; set; }
         public Guid? PRICE_GUID { get; set; }
-
-        //public virtual DAT_CONTACTS DAT_CONTACTS { get; set; }
-        //public virtual DAT_CONTACTS DAT_CONTACTS1 { get; set; }
-        //public virtual DAT_CUSTOMERS DAT_CUSTOMERS { get; set; }
     }
 }

@@ -2,11 +2,19 @@
 @{  
     ViewBag.Title = $"CoC Form-";  
 } 
+<style>
+    legend {
+        background-color: darkslategrey;
+        color: white;
+        padding: 5px 10px
+    }
+    input {margin: 3px}
+</style>
 <h2> Chain of Custody Form </h2> 
 <body>
     <form method="post">
         <fieldset>
-            <h5>Work Order: @ViewData["WorkOrder"]</h5>
+            <legend>Work Order: @ViewData["WorkOrder"]</legend>
             <p><div>
                 <label for="ServiceOrder">Project ID:</label>
                 <input type="text" name="ServiceOrder" value="" />

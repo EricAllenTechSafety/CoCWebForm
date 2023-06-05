@@ -11,6 +11,7 @@ using System.Text.Encodings.Web;
 using System.Timers;
 using Microsoft.AspNetCore.Session;
 using Timer = System.Timers.Timer;
+using CoCWebForm.ServiceManagerEntities.ServiceManagerModels;
 
 namespace CoCWebForm.Controllers
 {
@@ -30,21 +31,24 @@ namespace CoCWebForm.Controllers
         // GET: /Login/Validate
         public ActionResult Validate(string CustEmail, string WorkOrderNum)
         {
-            try
+            try // CO-BBC20090178D-01 : testing WorkOrder#
             {
-                // Check WorkOrder # against DB
-                //var db_workOrder = (from orders in _dbContext.DAT_ORDERS
-                //                    where orders.ID.ToString() == WorkOrderNum
-                //                    select orders).SingleOrDefault();
-                //if (db_workOrder == null) throw new Exception("Invalid Work Order Entered.");
-                
-                // Check EmailAddress
+                // Check EmailAddress for @ symbol
                 if (CustEmail.Contains('@')) 
                 {
-                    var index = CustEmail.IndexOf('@');
-                    var url = CustEmail.Substring(index+1);
+                    // Check WorkOrder # against DB
+                    var db_Order = (from orders in _dbContext.DAT_ORDERS
+                                        where WorkOrderNum.Contains(orders.PROJECT_ID)
+                                        select orders).SingleOrDefault();
+                    if (!ValidateWorkOrderNumber(WorkOrderNum, db_Order)) throw new Exception("Invalid Work Order Entered.");
+
+                    // Check Email against email in DB with that WorkOrder
+                    var client = (from contact in _dbContext.DAT_CONTACTS
+                                  where contact.CONTACT_GUID == db_Order.FIRSTCONTACT_GUID
+                                  select contact).SingleOrDefault();
+                    if (!ValidateEmailAddress(CustEmail, client)) throw new Exception("Email provided is invalid"); 
                 }
-                else { throw new Exception("Email provided is invalid"); }
+                else { throw new Exception("Entry is not a valid email"); }
             }
             catch { }
             loginModel = CreateEmailCode(CustEmail, WorkOrderNum);
@@ -54,8 +58,10 @@ namespace CoCWebForm.Controllers
 
         public IActionResult ConfirmCode(string ValidationCode)
         {
-            if (ValidationCode == loginModel.ValidationCode) return View("~/Views/CoCForm/Index.cshtml");
-            else return View("Failure");
+            if (ValidationCode == loginModel.ValidationCode) 
+                return View("~/Views/CoCForm/Index.cshtml");
+            else 
+                return View("Failure");
         }
 
         // GET: /Login/Failure
@@ -104,5 +110,22 @@ namespace CoCWebForm.Controllers
                 ViewBag.Error = "Oops";
             }      
         }
+
+        #region Client Validation Methods
+        private bool ValidateWorkOrderNumber(string inputNum, DAT_ORDERS db_Order)
+        {
+            bool isValid = false;
+            if (inputNum == $"{db_Order.REGION_ID}-{db_Order.PROJECT_ID}-{db_Order.ORDER_NUMBER}") isValid = true;
+            return isValid;
+        }
+        private bool ValidateEmailAddress(string inputEmail, DAT_CONTACTS contact)
+        {
+            bool isValid = false;
+            var inputUrl = inputEmail.Substring(inputEmail.IndexOf('@') + 1);
+            var dbUrl = contact.E_MAIL.Substring(contact.E_MAIL.IndexOf("@") + 1);
+            if (inputUrl == dbUrl) isValid = true;
+            return isValid;
+        }
+        #endregion
     }
 }
