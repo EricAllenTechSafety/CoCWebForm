@@ -1,12 +1,12 @@
 ﻿@model CoCWebForm.Models.CoCDataModel
 @{  
-    ViewBag.Title = "CoC Form";  
+    ViewBag.Title = $"CoC Form-";  
 } 
 <h2> Chain of Custody Form </h2> 
 <body>
     <form method="post">
         <fieldset>
-            <h5>Work Order: {WorkOrderId}</h5>
+            <h5>Work Order: @ViewData["WorkOrder"]</h5>
             <p><div>
                 <label for="ServiceOrder">Project ID:</label>
                 <input type="text" name="ServiceOrder" value="" />
@@ -40,7 +40,7 @@
                             <th>Media Lot #</th>
                             <th>Sample Volume/Measure</th>
                         </tr>
-                            @*@foreach (var sample in Model.Samples)
+                           @* @foreach (var sample in Model.Samples)
                             {
                                 <tr>
                                     <td>@sample.SampleId</td>

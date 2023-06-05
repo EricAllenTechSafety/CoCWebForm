@@ -8,8 +8,9 @@
 <h2>Login</h2>
 
 <h5>Enter in a valid Work Order Number and the email associated with that work order to get started.</h5>
-
-<p>Work Order #: <input type="text" name="WorkOrderNum" /></p>
-<p>Customer Email: <input type="text" name="CustEmail" /></p>
-<a asp-action="Validate" asp-controller="Login" class="btn btn-primary">Submit</a>
+    <form asp-action="Validate" asp-controller="Login">
+        <p>Work Order #: <input type="text" name="WorkOrderNum" required /></p>
+        <p>Customer Email: <input type="text" name="CustEmail" required /></p>
+        <input type="submit" value="Submit"/>
+    </form>
 </div>

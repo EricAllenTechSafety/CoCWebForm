@@ -5,8 +5,11 @@ namespace CoCWebForm.Controllers
 {
     public class CoCFormController : Controller
     {
-        public IActionResult Index(List<Sample> samples)
+        private CoCDataModel dataModel = new CoCDataModel();
+        
+        public IActionResult Index(string id)
         {
+            ViewData["WorkOrder"] = id;
             return View();
         }
 
@@ -19,6 +22,11 @@ namespace CoCWebForm.Controllers
             samples.Add(sample);
 
             return View(samples);
+        }
+        public IActionResult PrintSubmit() 
+        {
+            // TO DO: take info from form and create PDF to print out
+            return View();
         }
     }
 }
