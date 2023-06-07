@@ -7,22 +7,26 @@ namespace CoCWebForm.Controllers
     {
         private CoCDataModel dataModel = new CoCDataModel();
         
-        public IActionResult Index(string id)
+        public IActionResult Index()
         {
-            ViewData["WorkOrder"] = id;
-            return View();
+            //ViewData["WorkOrder"] = id;
+            dataModel.Samples = new List<Sample>();
+            dataModel.Samples.Add(new Sample() { 
+                SampleId = "", 
+                MediaType = "",
+                IsoClass = "",
+                MediaLotNumber = 0,
+                SampleVol = ""
+            }); 
+            return View(dataModel);
+        }
+        [HttpPost]
+        public ActionResult Index(CoCDataModel dataModel)
+        {
+            dataModel.Samples.Add(new Sample());
+            return View(dataModel);
         }
 
-        public ActionResult CreateNewSample(List<Sample> samples)
-        {
-            var sample = new Sample()
-            {
-                SampleId = Guid.NewGuid(),
-            };
-            samples.Add(sample);
-
-            return View(samples);
-        }
         public IActionResult PrintSubmit() 
         {
             // TO DO: take info from form and create PDF to print out

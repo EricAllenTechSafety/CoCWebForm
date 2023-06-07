@@ -2,6 +2,35 @@
 @{  
     ViewBag.Title = $"CoC Form-";  
 } 
+<script type="text/javascript">
+    function ValidateSampleData(){
+        if($(".validateSampleId").attr('value') == "0" || $(".validateSampleId").attr('value') ==""){
+            alert("Enter Valid Sample ID");
+            return false;
+        }
+        else if($(".validateMediaType").attr('value') == ""){
+            alert("Enter Valid Media Type");
+            return false;
+        }
+        else if($(".validateIsoClass").attr('value') == ""){
+            alert("Enter Valid ISO Class");
+            return false;
+        }
+        else if ($(".validateSampleType").attr('value') == "") {
+            alert("Enter Valid Sample Type");
+            return false;
+        }
+        else if ($(".validateMediaLotNumber").attr('value') == "") {
+            alert("Enter Valid Media Lot Number");
+            return false;
+        }
+        else if ($(".validateSampleVol").attr('value') == "") {
+            alert("Enter Valid Sample Volume/Measure");
+            return false;
+        }
+        return true;
+    }
+    </script>
 <style>
     legend {
         background-color: darkslategrey;
@@ -15,10 +44,8 @@
     <form method="post">
         <fieldset>
             <legend>Work Order: @ViewData["WorkOrder"]</legend>
-            <p><div>
                 <label for="ServiceOrder">Project ID:</label>
                 <input type="text" name="ServiceOrder" value="" />
-            </div></p>
             <p><div>
                 <label for="TestCodes">Test Code:</label>
                 <select name="TestCodes" id="TestCodes">
@@ -38,8 +65,8 @@
             </div></p>
             <p><div>
                 <label for="samples">Samples:</label>
-                <table class="table table-hover">
-                    <tbody id="samples">
+                <table id="sampleTable" class="table table-bordered">
+                    <thead>    
                         <tr>
                             <th>Sample ID</th>
                             <th>Media Type</th>
@@ -48,20 +75,25 @@
                             <th>Media Lot #</th>
                             <th>Sample Volume/Measure</th>
                         </tr>
-                           @* @foreach (var sample in Model.Samples)
+                    </thead>
+                    <tbody id="samples">
+                        <!-- Need to Figure out table to add samples to -->
+                            @for (int i=0; i < Model.Samples.Count; i++)
                             {
-                                <tr>
-                                    <td>@sample.SampleId</td>
-                                    <td>@sample.MediaType</td>
-                                    <td>@sample.IsoClass</td>
-                                    <td>@sample.SampleType</td>
-                                    <td>@sample.MediaLotNumber</td>
-                                    <td>@sample.SampleVol</td>
-                                </tr>
-                            }*@
+                            <tr>
+                                <td style="width:20%;">@Html.TextBoxFor(m => m.Samples[i].SampleId, new { @class = "validateSampleId" })</td>
+                                <td style="width:20%;">@Html.TextBoxFor(m => m.Samples[i].MediaType, new { @class = "validateMediaType" })</td>
+                                <td style="width:20%;">@Html.TextBoxFor(m => m.Samples[i].IsoClass, new { @class = "validateIsoClass" })</td>
+                                <td style="width:20%;">@Html.TextBoxFor(m => m.Samples[i].SampleType, new { @class = "validateSampleType" })</td>
+                                <td style="width:20%;">@Html.TextBoxFor(m => m.Samples[i].MediaLotNumber, new { @class = "validateMediaLotNumber" })</td>
+                                <td style="width:20%;">@Html.TextBoxFor(m => m.Samples[i].SampleVol, new { @class = "validateSampleVol" })</td>
+                                <td><button type="button" class="btn btn-primary" onclick="removeTr(0);">Delete</button></td>
+                            </tr>
+                            }
+
                     </tbody>
                 </table>
-                <input type="button" id="addSample" name="addSample" value="Add Sample" />
+                    <input type="submit" id="addSample" onclick="javascript:return ValidateData();" value="addSample" class="btn btn-primary"></input>
             </div></p>
             <br />
             <p><div>

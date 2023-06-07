@@ -1,9 +1,11 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 
 namespace CoCWebForm.Models
 {
     public class CoCDataModel
     {
+        public LoginModel LoginModel { get; set; }
         public Guid Id { get; set; }
         [DisplayName("Project Id")]
         public string ServiceOrder { get; set; }
@@ -25,7 +27,7 @@ namespace CoCWebForm.Models
 
     public class Sample
     {
-        public Guid SampleId { get; set; }
+        public string SampleId { get; set; }
         public string MediaType { get; set; }
         public string IsoClass { get; set; }
         public string SampleType { get; set; }

@@ -19,9 +19,7 @@ namespace CoCWebForm.Controllers
     public class LoginController : Controller
     {
         private ServiceManagerContext _dbContext = new ServiceManagerContext();
-        private Timer expirationTimer = new Timer() { Interval = 900000 }; // Timer set to 15min
-        private LoginModel loginModel = new LoginModel();
-                
+    
         // GET: /Login/
         public IActionResult Index()
         {
@@ -40,25 +38,26 @@ namespace CoCWebForm.Controllers
                     var db_Order = (from orders in _dbContext.DAT_ORDERS
                                         where WorkOrderNum.Contains(orders.PROJECT_ID)
                                         select orders).SingleOrDefault();
-                    if (!ValidateWorkOrderNumber(WorkOrderNum, db_Order)) throw new Exception("Invalid Work Order Entered.");
+                    if (!ValidateWorkOrderNumber(WorkOrderNum, db_Order)) return NotFound("WorkOrder Not Found");
 
                     // Check Email against email in DB with that WorkOrder
                     var client = (from contact in _dbContext.DAT_CONTACTS
                                   where contact.CONTACT_GUID == db_Order.FIRSTCONTACT_GUID
                                   select contact).SingleOrDefault();
-                    if (!ValidateEmailAddress(CustEmail, client)) throw new Exception("Email provided is invalid"); 
+                    if (!ValidateEmailAddress(CustEmail, client)) return NotFound("Email Not Found"); 
                 }
                 else { throw new Exception("Entry is not a valid email"); }
             }
             catch { }
-            loginModel = CreateEmailCode(CustEmail, WorkOrderNum);
+            var _data = CreateEmailCode(CustEmail, WorkOrderNum);
+            
             //SendEmail(loginModel);
-            return View("~/Views/Login/Validate.cshtml");
+            return View("~/Views/Login/Validate.cshtml", _data);
         }
 
-        public IActionResult ConfirmCode(string ValidationCode)
+        public IActionResult ConfirmCode(string InputCode)
         {
-            if (ValidationCode == loginModel.ValidationCode) 
+            if (InputCode == (string)TempData["ValidCode"]) 
                 return View("~/Views/CoCForm/Index.cshtml");
             else 
                 return View("Failure");
@@ -72,16 +71,19 @@ namespace CoCWebForm.Controllers
             return View();
         }
 
-        private LoginModel CreateEmailCode(string email, string workOrder)
+        private CoCDataModel CreateEmailCode(string email, string workOrder)
         {
-            expirationTimer.Start();
-            var model = new LoginModel()
+            //expirationTimer.Start();
+            var model = new CoCDataModel()
             {
-                EmailAddress = email,
-                WorkOrderNum = workOrder,
-                ValidationCode = Guid.NewGuid().ToString().Substring(0, 6),
-                ExpirationTimer = expirationTimer
-        };
+               LoginModel = new LoginModel() {
+                    EmailAddress = email,
+                    WorkOrderNum = workOrder,
+                    ValidationCode = Guid.NewGuid().ToString().Substring(0, 6),
+                    //ExpirationTimer = expirationTimer
+                },
+            };
+            TempData["ValidCode"] = model.LoginModel.ValidationCode; 
             return model;
         }
         
@@ -94,9 +96,9 @@ namespace CoCWebForm.Controllers
                     var senderEmail = new MailAddress("eric.allen@techsafety.com");
                     var recieverEmail = new MailAddress(loginModel.EmailAddress);
                     var subject = "TSS Validation code";
-                    var body = $"Your validation code is: \n{loginModel.ValidationCode} \n \n Please enter it in within the next 15 minutes, before it expires.";
+                    var body = $"Your validation code is: \n{loginModel.ValidationCode} \n \n This code is only valid for 15 minutes. If it expires, you will need to login again.";
                     var client = new SmtpClient("tss-mx.corp.techsafety.com");
-                    client.Credentials = new NetworkCredential("eric.allen", "F19!7KG0Lupv");
+                    client.Credentials = new NetworkCredential("eric.allen@techsafety.com", "F19!7KG0Lupv");
                     var message = new MailMessage(senderEmail, recieverEmail)
                     {
                         Subject = subject,
