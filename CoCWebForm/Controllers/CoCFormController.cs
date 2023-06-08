@@ -6,26 +6,25 @@ namespace CoCWebForm.Controllers
     public class CoCFormController : Controller
     {
         private CoCDataModel dataModel = new CoCDataModel();
-        
+
+        [HttpPost]
         public IActionResult Index()
         {
-            //ViewData["WorkOrder"] = id;
-            dataModel.Samples = new List<Sample>();
-            dataModel.Samples.Add(new Sample() { 
-                SampleId = "", 
-                MediaType = "",
-                IsoClass = "",
-                MediaLotNumber = 0,
-                SampleVol = ""
-            }); 
-            return View(dataModel);
+            return View();
         }
-        [HttpPost]
-        public ActionResult Index(CoCDataModel dataModel)
+
+        public IActionResult AddSample(Sample sample)
         {
-            dataModel.Samples.Add(new Sample());
+            dataModel.Samples.Add(sample);
             return View(dataModel);
         }
+
+        //[HttpPost]
+        //public ActionResult Index(CoCDataModel dataModel)
+        //{
+        //    dataModel.Samples.Add(new Sample());
+        //    return View(dataModel);
+        //}
 
         public IActionResult PrintSubmit() 
         {

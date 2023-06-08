@@ -43,7 +43,7 @@
 <body>
     <form method="post">
         <fieldset>
-            <legend>Work Order: @ViewData["WorkOrder"]</legend>
+            <legend>Work Order: @TempData["WorkOrderNum"]</legend>
                 <label for="ServiceOrder">Project ID:</label>
                 <input type="text" name="ServiceOrder" value="" />
             <p><div>
@@ -78,7 +78,15 @@
                     </thead>
                     <tbody id="samples">
                         <!-- Need to Figure out table to add samples to -->
-                            @for (int i=0; i < Model.Samples.Count; i++)
+                        <tr>
+                            <td><input type="text" style="width:auto" name="SampleId"/></td>
+                            <td><input type="text" style="width:auto" name="MediaType"/></td>
+                            <td><input type="text" style="width:auto" name="IsoClass"/></td>
+                            <td><input type="text" style="width:auto" name="SampleType" /></td>
+                            <td><input type="text" style="width:auto" name="MediaLotNumber"/></td>
+                            <td><input type="text" style="width:auto" name="SampleVol"/></td>
+                        </tr>
+                        @* @for (int i=0; i < Model.Samples.Count; i++)
                             {
                             <tr>
                                 <td style="width:20%;">@Html.TextBoxFor(m => m.Samples[i].SampleId, new { @class = "validateSampleId" })</td>
@@ -89,11 +97,11 @@
                                 <td style="width:20%;">@Html.TextBoxFor(m => m.Samples[i].SampleVol, new { @class = "validateSampleVol" })</td>
                                 <td><button type="button" class="btn btn-primary" onclick="removeTr(0);">Delete</button></td>
                             </tr>
-                            }
+                            }*@
 
                     </tbody>
                 </table>
-                    <input type="submit" id="addSample" onclick="javascript:return ValidateData();" value="addSample" class="btn btn-primary"></input>
+                    <input type="button" id="addSample" value="Add Sample" action="AddSampleRow" class="btn btn-primary"></input>
             </div></p>
             <br />
             <p><div>
