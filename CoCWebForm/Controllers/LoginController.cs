@@ -38,21 +38,20 @@ namespace CoCWebForm.Controllers
                     var db_Order = (from orders in _dbContext.DAT_ORDERS
                                         where WorkOrderNum.Contains(orders.PROJECT_ID)
                                         select orders).SingleOrDefault();
-                    if (!ValidateWorkOrderNumber(WorkOrderNum, db_Order)) return NotFound("We don't have a WorkOrder that matches the WorkOrder entered.");
+                    if (!ValidateWorkOrderNumber(WorkOrderNum, db_Order)) return View("Error");
 
                     // Check Email against email in DB with that WorkOrder
                     var client = (from contact in _dbContext.DAT_CONTACTS
                                   where contact.CONTACT_GUID == db_Order.FIRSTCONTACT_GUID
                                   select contact).SingleOrDefault();
-                    if (!ValidateEmailAddress(CustEmail, client)) return NotFound("The email you entered doesn't match what we have in our database."); 
+                    if (!ValidateEmailAddress(CustEmail, client)) return View("Error"); 
                 }
-                else { throw new Exception("Entry is not a valid email"); }
+                else { return View("Error"); }
             }
             catch { }
             var _data = CreateEmailCode(CustEmail, WorkOrderNum);
             
-            //emails confirmed address a code
-            //SendEmail(_data.LoginModel);
+            SendEmail(_data.LoginModel);
             return View("~/Views/Login/Validate.cshtml");
         }
 
@@ -61,32 +60,22 @@ namespace CoCWebForm.Controllers
             if (InputCode.Trim() == (string)TempData["ValidCode"]) 
                 return RedirectToAction("Index", "CoCForm");
             else 
-                return View("Failure");
+                return View("Error");
         }
 
-        // GET: /Login/Failure
-        public IActionResult Failure(string email, int ID)
-        {
-            ViewData["Message"] = email;
-            ViewData["ID"] = ID;
-            return View();
-        }
 
         private CoCDataModel CreateEmailCode(string email, string workOrder)
         {
-            //expirationTimer.Start();
             var model = new CoCDataModel()
             {
                LoginModel = new LoginModel() {
                     EmailAddress = email,
                     WorkOrderNum = workOrder,
-                    ValidationCode = Guid.NewGuid().ToString().Substring(0, 6),
-                    //ExpirationTimer = expirationTimer
+                    ValidationCode = Guid.NewGuid().ToString().Substring(0, 6)
                 },
             };
             TempData["ValidCode"] = model.LoginModel.ValidationCode;
             TempData["WorkOrderNum"] = workOrder;
-            //TempData["DataModel"] = model;
             return model;
         }
         
@@ -100,13 +89,14 @@ namespace CoCWebForm.Controllers
                     var recieverEmail = new MailAddress(loginModel.EmailAddress);
                     var subject = "TSS Validation code - TEST";
                     var body = $"Your validation code is: \n{loginModel.ValidationCode} \n \n This code is only valid for 15 minutes. If it expires, you will need to login again.";
-                    
+
+                    // Hard coded for debugging/testing. CHANGE BEFORE DEPLOYING
                     // Following is set up through personal hotmail account for test purposes
                     // NEED TO EDIT TO CORRECT TSS MAIL ACCOUNT/DETAILS
                     var client = new SmtpClient("smtp-mail.outlook.com");
                     client.Port = 587;
                     client.EnableSsl = true;
-                    client.Credentials = new NetworkCredential("USERNAME", "PASSWORD");
+                    client.Credentials = new NetworkCredential("e.s.allen@hotmail.com", "qwertasdfg125!");
                     
                     var message = new MailMessage(senderEmail, recieverEmail)
                     {
@@ -118,7 +108,7 @@ namespace CoCWebForm.Controllers
             }
             catch (Exception)
             {
-                ViewBag.Error = "Oops";
+                View("Error");
             }      
         }
 
@@ -135,7 +125,8 @@ namespace CoCWebForm.Controllers
             var inputUrl = inputEmail.Substring(inputEmail.IndexOf('@') + 1);
             var dbUrl = contact.E_MAIL.Substring(contact.E_MAIL.IndexOf("@") + 1);
             if (inputUrl == dbUrl) isValid = true;
-            return true;
+            // Hard coded for debugging/testing. CHANGE BEFORE DEPLOYING
+            return true; 
         }
         #endregion
     }

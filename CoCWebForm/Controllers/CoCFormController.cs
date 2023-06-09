@@ -9,21 +9,15 @@ namespace CoCWebForm.Controllers
 
         public IActionResult Index()
         {
+            if (string.IsNullOrEmpty((string)TempData.Peek("WorkOrderNum"))) return View("Error ");
             return View();
         }
 
         public IActionResult AddSample(Sample sample)
         {
-            dataModel.Samples.Add(sample);
+            // TO DO: take info from form and create PDF to print out
             return View(dataModel);
         }
-
-        //[HttpPost]
-        //public ActionResult Index(CoCDataModel dataModel)
-        //{
-        //    dataModel.Samples.Add(new Sample());
-        //    return View(dataModel);
-        //}
 
         public IActionResult PrintSubmit() 
         {
