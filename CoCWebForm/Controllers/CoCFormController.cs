@@ -7,7 +7,6 @@ namespace CoCWebForm.Controllers
     {
         private CoCDataModel dataModel = new CoCDataModel();
 
-        [HttpPost]
         public IActionResult Index()
         {
             return View();

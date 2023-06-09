@@ -59,7 +59,7 @@ namespace CoCWebForm.Controllers
         public IActionResult ConfirmCode(string InputCode)
         {
             if (InputCode.Trim() == (string)TempData["ValidCode"]) 
-                return View("~/Views/CoCForm/Index.cshtml");
+                return RedirectToAction("Index", "CoCForm");
             else 
                 return View("Failure");
         }
