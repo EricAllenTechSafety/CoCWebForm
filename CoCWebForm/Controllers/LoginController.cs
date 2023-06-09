@@ -57,8 +57,11 @@ namespace CoCWebForm.Controllers
 
         public IActionResult ConfirmCode(string InputCode)
         {
-            if (InputCode.Trim() == (string)TempData["ValidCode"]) 
+            if (InputCode.Trim() == (string)TempData["ValidCode"])
+            {
+                TempData["IsValidClient"] = "true";
                 return RedirectToAction("Index", "CoCForm");
+            }
             else 
                 return View("Error");
         }

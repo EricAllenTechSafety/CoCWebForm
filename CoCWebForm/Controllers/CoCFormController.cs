@@ -9,8 +9,8 @@ namespace CoCWebForm.Controllers
 
         public IActionResult Index()
         {
-            if (string.IsNullOrEmpty((string)TempData.Peek("WorkOrderNum"))) return View("Error ");
-            return View();
+            if (!string.IsNullOrEmpty((string)TempData["IsValidClient"]) && (string)TempData["IsValidClient"]=="true") return View();
+            return View("Error");
         }
 
         public IActionResult AddSample(Sample sample)
