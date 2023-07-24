@@ -5,6 +5,7 @@ namespace CoCWebForm.Models
 {
     public class CoCDataModel
     {
+        //Refactor??
         public LoginModel LoginModel { get; set; }
         public Guid Id { get; set; }
         [DisplayName("Project Id")]

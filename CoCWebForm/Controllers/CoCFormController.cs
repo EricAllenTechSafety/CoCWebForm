@@ -5,19 +5,39 @@ namespace CoCWebForm.Controllers
 {
     public class CoCFormController : Controller
     {
-        private CoCDataModel dataModel = new CoCDataModel();
-
-        public IActionResult Index()
+        [HttpGet]
+        public ActionResult Index()
         {
-            if (!string.IsNullOrEmpty((string)TempData["IsValidClient"]) && (string)TempData["IsValidClient"]=="true") return View();
+            CoCDataModel dataModel = new CoCDataModel();
+            dataModel.Samples = new List<Sample>();
+            dataModel.Samples.Add(new Sample { 
+                SampleId = "",
+                MediaType = "",
+                IsoClass = "",
+                SampleType = "",
+                MediaLotNumber = 0,
+                SampleVol = ""
+            });
+            if (!string.IsNullOrEmpty((string)TempData["IsValidClient"]) && (string)TempData["IsValidClient"]=="true") return View(dataModel);
             return View("Error");
         }
 
-        public IActionResult AddSample(Sample sample)
-        {
-            // TO DO: take info from form and create PDF to print out
+        [HttpPost]
+        public IActionResult AddSample(CoCDataModel dataModel) 
+        { 
+            dataModel.Samples.Add(new Sample
+            {
+                SampleId = "",
+                MediaType = "",
+                IsoClass = "",
+                SampleType = "",
+                MediaLotNumber = 0,
+                SampleVol = ""
+            });
             return View(dataModel);
         }
+
+
 
         public IActionResult PrintSubmit() 
         {

@@ -9,8 +9,8 @@
 
 <h5>Enter in a valid Work Order Number and the email associated with that work order to get started.</h5>
     <form asp-action="Validate" asp-controller="Login">
-        <p>Work Order #: <input type="text" name="WorkOrderNum" required /></p>
-        <p>Customer Email: <input type="text" name="CustEmail" required /></p>
+        <p>Work Order #: <input type="text" name="WorkOrderNum" required value=@ViewData["WorkOrder"].ToString() /></p>
+        <p>Customer Email: <input type="text" name="CustEmail" required value=@ViewData["Email"] /></p>
         <input type="submit" value="Submit"/>
     </form>
 </div>

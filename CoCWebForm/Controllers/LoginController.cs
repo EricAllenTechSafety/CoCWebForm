@@ -21,8 +21,18 @@ namespace CoCWebForm.Controllers
         private ServiceManagerContext _dbContext = new ServiceManagerContext();
     
         // GET: /Login/
-        public IActionResult Index()
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
+
+        // GET: /Login/Index/email/workOrder
+        public IActionResult Index(string email, string workOrder)
         {
+            if (string.IsNullOrEmpty(email)) email = "";
+            if (string.IsNullOrEmpty(workOrder)) workOrder = "";
+            ViewData["Email"] = email;
+            ViewData["WorkOrder"] = workOrder;
             return View();
         }
 
@@ -88,18 +98,16 @@ namespace CoCWebForm.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var senderEmail = new MailAddress("e.s.allen@hotmail.com");
+                    var senderEmail = new MailAddress("test@validationCodesRUs.com");
                     var recieverEmail = new MailAddress(loginModel.EmailAddress);
                     var subject = "TSS Validation code - TEST";
-                    var body = $"Your validation code is: \n{loginModel.ValidationCode} \n \n This code is only valid for 15 minutes. If it expires, you will need to login again.";
+                    var body = $"Your validation code is:\n \n{loginModel.ValidationCode}\n \n This code is only valid for 15 minutes. If it expires, you will need to login again.";
 
                     // Hard coded for debugging/testing. CHANGE BEFORE DEPLOYING
                     // Following is set up through personal hotmail account for test purposes
                     // NEED TO EDIT TO CORRECT TSS MAIL ACCOUNT/DETAILS
-                    var client = new SmtpClient("smtp-mail.outlook.com");
-                    client.Port = 587;
-                    client.EnableSsl = true;
-                    client.Credentials = new NetworkCredential("e.s.allen@hotmail.com", "qwertasdfg125!");
+                    var client = new SmtpClient("TSS-TX-EALLEN");
+                    client.Port = 25;
                     
                     var message = new MailMessage(senderEmail, recieverEmail)
                     {
@@ -115,12 +123,16 @@ namespace CoCWebForm.Controllers
             }      
         }
 
-        #region Client Validation Methods
+#region Client Validation Methods
         private bool ValidateWorkOrderNumber(string inputNum, DAT_ORDERS db_Order)
         {
             bool isValid = false;
             if (inputNum == $"{db_Order.REGION_ID}-{db_Order.PROJECT_ID}-{db_Order.ORDER_NUMBER}") isValid = true;
+#if DEBUG
+            return true;
+#else
             return isValid;
+#endif
         }
         private bool ValidateEmailAddress(string inputEmail, DAT_CONTACTS contact)
         {
@@ -128,9 +140,13 @@ namespace CoCWebForm.Controllers
             var inputUrl = inputEmail.Substring(inputEmail.IndexOf('@') + 1);
             var dbUrl = contact.E_MAIL.Substring(contact.E_MAIL.IndexOf("@") + 1);
             if (inputUrl == dbUrl) isValid = true;
+#if DEBUG
             // Hard coded for debugging/testing. CHANGE BEFORE DEPLOYING
-            return true; 
+            return true;
+#else
+            return isValid;
+#endif
         }
-        #endregion
+#endregion
     }
 }

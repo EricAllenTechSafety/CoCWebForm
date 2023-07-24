@@ -2,38 +2,10 @@
 @{  
     ViewBag.Title = $"CoC Form-";  
 } 
-<script type="text/javascript">
-    function ValidateSampleData(){
-        if($(".validateSampleId").attr('value') == "0" || $(".validateSampleId").attr('value') ==""){
-            alert("Enter Valid Sample ID");
-            return false;
-        }
-        else if($(".validateMediaType").attr('value') == ""){
-            alert("Enter Valid Media Type");
-            return false;
-        }
-        else if($(".validateIsoClass").attr('value') == ""){
-            alert("Enter Valid ISO Class");
-            return false;
-        }
-        else if ($(".validateSampleType").attr('value') == "") {
-            alert("Enter Valid Sample Type");
-            return false;
-        }
-        else if ($(".validateMediaLotNumber").attr('value') == "") {
-            alert("Enter Valid Media Lot Number");
-            return false;
-        }
-        else if ($(".validateSampleVol").attr('value') == "") {
-            alert("Enter Valid Sample Volume/Measure");
-            return false;
-        }
-        return true;
-    }
-    </script>
+<form id="sample-form" asp-action="AddSample" asp-controller="CoCForm"></form>
 <style>
     legend {
-        background-color: darkslategrey;
+        background-color: midnightblue;
         color: white;
         padding: 5px 10px
     }
@@ -77,16 +49,7 @@
                         </tr>
                     </thead>
                     <tbody id="samples">
-                        <!-- Need to Figure out table to add samples to -->
-                        <tr>
-                            <td><input type="text" style="width:auto" name="SampleId"/></td>
-                            <td><input type="text" style="width:auto" name="MediaType"/></td>
-                            <td><input type="text" style="width:auto" name="IsoClass"/></td>
-                            <td><input type="text" style="width:auto" name="SampleType" /></td>
-                            <td><input type="text" style="width:auto" name="MediaLotNumber"/></td>
-                            <td><input type="text" style="width:auto" name="SampleVol"/></td>
-                        </tr>
-                        @* @for (int i=0; i < Model.Samples.Count; i++)
+                         @for (int i=0; i < Model.Samples.Count; i++)
                             {
                             <tr>
                                 <td style="width:20%;">@Html.TextBoxFor(m => m.Samples[i].SampleId, new { @class = "validateSampleId" })</td>
@@ -95,13 +58,12 @@
                                 <td style="width:20%;">@Html.TextBoxFor(m => m.Samples[i].SampleType, new { @class = "validateSampleType" })</td>
                                 <td style="width:20%;">@Html.TextBoxFor(m => m.Samples[i].MediaLotNumber, new { @class = "validateMediaLotNumber" })</td>
                                 <td style="width:20%;">@Html.TextBoxFor(m => m.Samples[i].SampleVol, new { @class = "validateSampleVol" })</td>
-                                <td><button type="button" class="btn btn-primary" onclick="removeTr(0);">Delete</button></td>
                             </tr>
-                            }*@
+                            }
 
                     </tbody>
+                        <tr><td colspan="2"><input type="submit" form="sample-form" value="Add Sample" title="Add Sample" onclick="javascript:return ValidateSampleData();" /></td></tr>
                 </table>
-                    <input type="button" value="Add Sample" asp-controller="CoCForm" onclick="AddSampleRow()" />
             </div></p>
             <br />
             <p><div>
@@ -118,7 +80,7 @@
             </div></p>
             <p><div>
                 <label for="eSignDate">eSignature Date:</label>
-                <input type="date" name="eSignDate" value="" />
+                <input type="date" name="eSignDate" value="@DateTime.Today.ToString("yyyy-MM-dd")"/>
             </div></p>
             <p><div>
                 <label for="TrackingNumber">Tracking Number:</label>
@@ -126,7 +88,7 @@
             </div></p>
             <p><div>
                 <label>&nbsp;</label>
-                <input type="submit" value="Submit" class="submit" />
+                <input type="submit" value="Submit" />
             </div></p>
         </fieldset>
     </form>
