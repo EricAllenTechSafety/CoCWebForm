@@ -1,21 +1,12 @@
 ﻿using CoCWebForm.Models;
 using CoCWebForm.ServiceManagerEntities;
-using Microsoft.AspNetCore.Mvc;
-using System.Configuration;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.Security.Cryptography;
-using System.Text.Encodings.Web;
-using System.Timers;
-using Microsoft.AspNetCore.Session;
-using Timer = System.Timers.Timer;
 using CoCWebForm.ServiceManagerEntities.ServiceManagerModels;
+using Microsoft.AspNetCore.Mvc;
+using System.Net.Mail;
 
 namespace CoCWebForm.Controllers
 {
-    
+
     public class LoginController : Controller
     {
         private ServiceManagerContext _dbContext = new ServiceManagerContext();
@@ -27,12 +18,10 @@ namespace CoCWebForm.Controllers
         //}
 
         // GET: /Login/Index/email/workOrder
-        public IActionResult Index(string email, string workOrder)
+        public IActionResult Index()
         {
-            if (string.IsNullOrEmpty(email)) email = "";
-            if (string.IsNullOrEmpty(workOrder)) workOrder = "";
-            ViewData["Email"] = email;
-            ViewData["WorkOrder"] = workOrder;
+            var request = HttpContext.Request.PathBase;
+            GetLoginValuesFromUrl(request);
             return View();
         }
 
@@ -69,7 +58,8 @@ namespace CoCWebForm.Controllers
         {
             if (InputCode.Trim() == (string)TempData["ValidCode"])
             {
-                TempData["IsValidClient"] = "true";
+                
+                ViewData["IsValidClient"] = "true";
                 return RedirectToAction("Index", "CoCForm");
             }
             else 
@@ -98,7 +88,7 @@ namespace CoCWebForm.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var senderEmail = new MailAddress("test@validationCodesRUs.com");
+                    var senderEmail = new MailAddress("TestFrom@TechSafety.com");
                     var recieverEmail = new MailAddress(loginModel.EmailAddress);
                     var subject = "TSS Validation code - TEST";
                     var body = $"Your validation code is:\n \n{loginModel.ValidationCode}\n \n This code is only valid for 15 minutes. If it expires, you will need to login again.";
@@ -121,6 +111,13 @@ namespace CoCWebForm.Controllers
             {
                 View("Error");
             }      
+        }
+
+        private void GetLoginValuesFromUrl(PathString path)
+        {
+            var emailWorkOrderCombo = path.Value.Substring(path.Value.IndexOf("x/") + 2);
+            ViewData["Email"] = emailWorkOrderCombo.Substring(0, emailWorkOrderCombo.IndexOf("/"));
+            ViewData["WorkOrder"] = emailWorkOrderCombo.Substring(emailWorkOrderCombo.IndexOf("/") + 1);
         }
 
 #region Client Validation Methods

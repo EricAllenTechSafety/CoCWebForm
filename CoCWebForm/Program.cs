@@ -20,12 +20,12 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.MapControllerRoute(
+    name: "landing",
+    pattern: "{controller=Login}/{action=Index}/{emailAddress?}/{workOrderNum?}");
+
 //app.MapControllerRoute(
 //    name: "default",
-//    pattern: "{controller=Login}/{action=Index}/{id?}");
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Login}/{action=Index}/{email?}/{workOrder?}");
+//    pattern: "{controller=Login}/{action=Index}");
 
 app.Run();

@@ -6,7 +6,8 @@ namespace CoCWebForm.Models
     {
         public string EmailAddress { get; set; }
         public string WorkOrderNum { get; set; }
-        public string ValidationCode { get; set; } 
+        public string ValidationCode { get; set; }
+        public bool IsValid { get; set; }
         public Timer ExpirationTimer { get; set; }
     }
 }

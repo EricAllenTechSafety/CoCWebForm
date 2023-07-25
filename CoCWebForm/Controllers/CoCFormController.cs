@@ -18,7 +18,7 @@ namespace CoCWebForm.Controllers
                 MediaLotNumber = 0,
                 SampleVol = ""
             });
-            if (!string.IsNullOrEmpty((string)TempData["IsValidClient"]) && (string)TempData["IsValidClient"]=="true") return View(dataModel);
+            if (!string.IsNullOrEmpty((string)ViewData["IsValidClient"]) && (string)ViewData["IsValidClient"]=="true") return View(dataModel);
             return View("Error");
         }
 
