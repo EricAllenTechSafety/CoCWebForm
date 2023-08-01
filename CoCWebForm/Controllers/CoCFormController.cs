@@ -18,8 +18,12 @@ namespace CoCWebForm.Controllers
                 MediaLotNumber = 0,
                 SampleVol = ""
             });
-            if (!string.IsNullOrEmpty((string)ViewData["IsValidClient"]) && (string)ViewData["IsValidClient"]=="true") return View(dataModel);
+#if DEBUG
+            return View(dataModel);
+#else
+            if (!string.IsNullOrEmpty((string)TempData.Peek("IsValidClient")) && (string)TempData.Peek("IsValidClient")=="true") return View(dataModel);
             return View("Error");
+#endif
         }
 
         [HttpPost]

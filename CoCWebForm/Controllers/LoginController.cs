@@ -3,31 +3,32 @@ using CoCWebForm.ServiceManagerEntities;
 using CoCWebForm.ServiceManagerEntities.ServiceManagerModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mail;
+using System.Web;
 
 namespace CoCWebForm.Controllers
 {
 
     public class LoginController : Controller
     {
-        private ServiceManagerContext _dbContext = new ServiceManagerContext();
-    
         // GET: /Login/
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
-
+        // GET: /Login/Index
         // GET: /Login/Index/email/workOrder
         public IActionResult Index()
         {
+            TempData.Clear();
             var request = HttpContext.Request.PathBase;
-            GetLoginValuesFromUrl(request);
+            var filter = request.Value.Length;
+            
+            // Pulls email and workorder from uri
+            if(filter > 12) GetLoginValuesFromUri(request);
+            else { ViewData["Email"] = ""; ViewData["WorkOrder"] = ""; }
             return View();
         }
 
         // GET: /Login/Validate
         public ActionResult Validate(string CustEmail, string WorkOrderNum)
         {
+            ServiceManagerContext _dbContext = new ServiceManagerContext();
             try // CO-BBC20090178D-01 : testing WorkOrder#
             {
                 // Check EmailAddress for @ symbol
@@ -51,15 +52,15 @@ namespace CoCWebForm.Controllers
             var _data = CreateEmailCode(CustEmail, WorkOrderNum);
             
             SendEmail(_data.LoginModel);
-            return View("~/Views/Login/Validate.cshtml");
+            return View();
         }
 
         public IActionResult ConfirmCode(string InputCode)
         {
-            if (InputCode.Trim() == (string)TempData["ValidCode"])
+            if (InputCode.Trim() == (string)TempData["SecretCode"])
             {
-                
-                ViewData["IsValidClient"] = "true";
+                TempData["IsValidClient"] = "true";
+                TempData.Keep();
                 return RedirectToAction("Index", "CoCForm");
             }
             else 
@@ -74,11 +75,14 @@ namespace CoCWebForm.Controllers
                LoginModel = new LoginModel() {
                     EmailAddress = email,
                     WorkOrderNum = workOrder,
-                    ValidationCode = Guid.NewGuid().ToString().Substring(0, 6)
+                    ValidationCode = Guid.NewGuid().ToString().Substring(0, 6),
+                    IsValid = true
                 },
             };
-            TempData["ValidCode"] = model.LoginModel.ValidationCode;
+            TempData.Add("SecretCode", model.LoginModel.ValidationCode);
+            //TempData.Add("ValidCode",model.LoginModel.ValidationCode.ToString());
             TempData["WorkOrderNum"] = workOrder;
+            TempData.Keep();
             return model;
         }
         
@@ -113,9 +117,9 @@ namespace CoCWebForm.Controllers
             }      
         }
 
-        private void GetLoginValuesFromUrl(PathString path)
+        private void GetLoginValuesFromUri(PathString path)
         {
-            var emailWorkOrderCombo = path.Value.Substring(path.Value.IndexOf("x/") + 2);
+            var emailWorkOrderCombo = path.Value.Substring(path.Value.IndexOf("x") + 2);
             ViewData["Email"] = emailWorkOrderCombo.Substring(0, emailWorkOrderCombo.IndexOf("/"));
             ViewData["WorkOrder"] = emailWorkOrderCombo.Substring(emailWorkOrderCombo.IndexOf("/") + 1);
         }
@@ -138,7 +142,6 @@ namespace CoCWebForm.Controllers
             var dbUrl = contact.E_MAIL.Substring(contact.E_MAIL.IndexOf("@") + 1);
             if (inputUrl == dbUrl) isValid = true;
 #if DEBUG
-            // Hard coded for debugging/testing. CHANGE BEFORE DEPLOYING
             return true;
 #else
             return isValid;
