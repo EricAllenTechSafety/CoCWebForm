@@ -9,8 +9,8 @@ namespace CoCWebForm.Controllers
         public ActionResult Index()
         {
             CoCDataModel dataModel = new CoCDataModel();
-            dataModel.Samples = new List<Sample>();
-            dataModel.Samples.Add(new Sample { 
+            dataModel.Samples = new List<SampleData>();
+            dataModel.Samples.Add(new SampleData { 
                 SampleId = "",
                 MediaType = "",
                 IsoClass = "",
@@ -29,7 +29,7 @@ namespace CoCWebForm.Controllers
         [HttpPost]
         public IActionResult AddSample(CoCDataModel dataModel) 
         { 
-            dataModel.Samples.Add(new Sample
+            dataModel.Samples.Add(new SampleData
             {
                 SampleId = "",
                 MediaType = "",

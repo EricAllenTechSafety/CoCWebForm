@@ -13,7 +13,7 @@ namespace CoCWebForm.Models
         public TestCode TestCode { get; set; }
         public string SpecialInstructions { get; set; }
         public string TssOffice { get; set; }
-        public List<Sample> Samples { get; set; }
+        public List<SampleData> Samples { get; set; }
         public DateTime SampleCollectionDate { get; set; }
         public string ViableSampler { get; set; }
         public string TechnicianName { get; set; }
@@ -26,7 +26,7 @@ namespace CoCWebForm.Models
         // TestCodes go here for drop-down
     }
 
-    public class Sample
+    public class SampleData
     {
         public string SampleId { get; set; }
         public string MediaType { get; set; }

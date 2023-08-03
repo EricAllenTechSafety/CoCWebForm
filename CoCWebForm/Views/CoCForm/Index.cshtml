@@ -1,7 +1,9 @@
 ﻿@model CoCWebForm.Models.CoCDataModel
+
 @{  
     ViewBag.Title = $"CoC Form-";  
 } 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <form id="sample-form" asp-action="AddSample" asp-controller="CoCForm"></form>
 <style>
     legend {
@@ -48,6 +50,16 @@
                             <th>Sample Volume/Measure</th>
                         </tr>
                     </thead>
+                    <tr id="tablerow0">
+                            <td><div class="editor-field"><input class="tesxt-box single-line" name="SampleId[0]" type="text" value="" required="required" /></div></td>
+                            <td><div class="editor-field"><input class="tesxt-box single-line" name="MediaType[0]" type="text" value="" required="required" /></div></td>
+                            <td><div class="editor-field"><input class="tesxt-box single-line" name="IsoClass[0]" type="text" value="" required="required" /></div></td>
+                            <td><div class="editor-field"><input class="tesxt-box single-line" name="SampleType[0]" type="text" value="" required="required" /></div></td>
+                            <td><div class="editor-field"><input class="tesxt-box single-line" name="MediaLotNumber[0]" type="text" value="" required="required" /></div></td>
+                            <td><div class="editor-field"><input class="tesxt-box single-line" name="SampleVol[0]" type="text" value="" required="required" /></div></td>
+                            <td><button type="button" class="btn btn-primary" onclick="removeTr(0);">Delete</button></td>
+                    </tr>
+@*
                     <tbody id="samples">
                          @for (int i=0; i < Model.Samples.Count; i++)
                             {
@@ -62,8 +74,9 @@
                             }
 
                     </tbody>
-                        <tr><td colspan="2"><input type="submit" form="sample-form" value="Add Sample" title="Add Sample" onclick="javascript:return ValidateSampleData();" /></td></tr>
+                        <tr><td colspan="2"><input type="submit" form="sample-form" value="Add Sample" title="Add Sample" onclick="javascript:return ValidateSampleData();" /></td></tr>*@
                 </table>
+                <p><button id="add" type="button" class="btn btn-primary">Add</button></p>
             </div></p>
             <br />
             <p><div>
@@ -93,3 +106,31 @@
         </fieldset>
     </form>
 </body>
+
+                @section Scripts{
+                    <script type="text/javascript">
+                        var counter = 1;
+                        $(function (){
+                            $('#add').click(function (){
+                                $('<tr id="tablerow' + counter + '">' +
+                                  '<td><div class="editor-field"><input class="tesxt-box single-line" name="SampleId[' + counter + ']" type="text" value="" required="required" /></div></td>' +
+                                  '<td><div class="editor-field"><input class="tesxt-box single-line" name="MediaType[' + counter + ']" type="text" value="" required="required" /></div></td>' +
+                                  '<td><div class="editor-field"><input class="tesxt-box single-line" name="IsoClass[' + counter + ']" type="text" value="" required="required" /></div></td>' +
+                                  '<td><div class="editor-field"><input class="tesxt-box single-line" name="SampleType[' + counter + ']" type="text" value="" required="required" /></div></td>' +
+                                  '<td><div class="editor-field"><input class="tesxt-box single-line" name="MediaLotNumber[' + counter + ']" type="text" value="" required="required" /></div></td>' +
+                                  '<td><div class="editor-field"><input class="tesxt-box single-line" name="SampleVol[' + counter + ']" type="text" value="" required="required" /></div></td>' +
+                                  '<td><button type="button" class="btn btn-primary" onclick="removeTr(' + counter + ');">Delete</button></td>'
+                            ).appendTo('#sampleTable');
+                            counter++;
+                            return false;
+                            });
+                        });
+                        function removeTr(index){
+                            if (counter > 1) {
+                                $('#tablerow' + index).remove();
+                                counter--;
+                            }
+                            return false;
+                        }
+                    </script>
+                }
