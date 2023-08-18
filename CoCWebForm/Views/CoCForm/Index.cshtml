@@ -15,23 +15,39 @@
 </style>
 <h2> Chain of Custody Form </h2> 
 <body>
-    <form method="post">
+    <form method="post" asp-action="SubmitPrint" asp-controller="CoCForm">
         <fieldset>
             <legend>Work Order: @TempData["WorkOrderNum"]</legend>
                 <label for="ServiceOrder">Project ID:</label>
                 <input type="text" name="ServiceOrder" value="" />
             <p><div>
-                <label for="TestCodes">Test Code:</label>
-                <select name="TestCodes" id="TestCodes">
-                    <option value="tbd1">TBD</option>
-                    <option value="tbd2">TBD_2</option>
-                    <option value="tbd3">TBD_3</option>
-                    <option value="tbd4">TBD_4</option>
+                <label for="TestCodes">Test Code :</label>
+                <select name="TestCodes-Categories" id="TestCodes">
+                    <option value="">-Category-</option>
+                        @{var codebank = new TestCodeBank();}
+                        @foreach(var category in codebank.CATEGORY)
+                        {
+                            <option value="@category.ToString()">@category.ToString()</option>
+                        }
+                </select>
+                <select name="TestCodes-Codes" id="TestCodes2">
+                    <option value="">-Code-</option>
+                        @foreach (var code in codebank.TEST_CODE)
+                        {
+                            <option value="@code.ToString()">@code.ToString()</option>
+                        }
+                </select>
+                <select name="TestCodes-Desc" id="TestCodes3">
+                    <option value="">-Description-</option>
+                        @foreach (var desc in codebank.DESCRIPTION)
+                        {
+                            <option value="@desc.ToString()">@desc.ToString()</option>
+                        }
                 </select>
             </div></p>
             <p><div>
-                <label for="TssOffice">Special Instructions:</label><br />
-                <textarea name="TssOffice" rows="4" cols="50"></textarea>
+                <label for="SpecialInstructions">Special Instructions:</label><br />
+                <textarea name="SpecialInstructions" rows="4" cols="50"></textarea>
             </div></p>
             <p><div>
                 <label for="TssOffice">TSS Office of Origin:</label>
@@ -59,22 +75,6 @@
                             <td><div class="editor-field"><input class="tesxt-box single-line" name="SampleVol[0]" type="text" value="" required="required" /></div></td>
                             <td><button type="button" class="btn btn-primary" onclick="removeTr(0);">Delete</button></td>
                     </tr>
-@*
-                    <tbody id="samples">
-                         @for (int i=0; i < Model.Samples.Count; i++)
-                            {
-                            <tr>
-                                <td style="width:20%;">@Html.TextBoxFor(m => m.Samples[i].SampleId, new { @class = "validateSampleId" })</td>
-                                <td style="width:20%;">@Html.TextBoxFor(m => m.Samples[i].MediaType, new { @class = "validateMediaType" })</td>
-                                <td style="width:20%;">@Html.TextBoxFor(m => m.Samples[i].IsoClass, new { @class = "validateIsoClass" })</td>
-                                <td style="width:20%;">@Html.TextBoxFor(m => m.Samples[i].SampleType, new { @class = "validateSampleType" })</td>
-                                <td style="width:20%;">@Html.TextBoxFor(m => m.Samples[i].MediaLotNumber, new { @class = "validateMediaLotNumber" })</td>
-                                <td style="width:20%;">@Html.TextBoxFor(m => m.Samples[i].SampleVol, new { @class = "validateSampleVol" })</td>
-                            </tr>
-                            }
-
-                    </tbody>
-                        <tr><td colspan="2"><input type="submit" form="sample-form" value="Add Sample" title="Add Sample" onclick="javascript:return ValidateSampleData();" /></td></tr>*@
                 </table>
                 <p><button id="add" type="button" class="btn btn-primary">Add</button></p>
             </div></p>
@@ -89,7 +89,7 @@
             </div></p>
             <p><div>
                 <label for="TechnicianName">Technician Name (eSignature):</label>
-                <input type="text" name="TechnicianName" value="" />
+                <input type="text" name="TechnicianName" value="" required="required"/>
             </div></p>
             <p><div>
                 <label for="eSignDate">eSignature Date:</label>
@@ -97,11 +97,11 @@
             </div></p>
             <p><div>
                 <label for="TrackingNumber">Tracking Number:</label>
-                    <input type="text" name="TrackingNumber" cols="50" value="" />
+                    <input type="text" name="TrackingNumber" cols="50" value="" required="required"/>
             </div></p>
             <p><div>
                 <label>&nbsp;</label>
-                <input type="submit" value="Submit" />
+                <input type="submit" value="Submit/Print" />
             </div></p>
         </fieldset>
     </form>

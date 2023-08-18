@@ -21,9 +21,11 @@ namespace CoCWebForm.Models
         public string TrackingNumber { get; set; }
     }
 
-    public enum TestCode
+    public class TestCode
     {
-        // TestCodes go here for drop-down
+        public string Category { get; set; }   
+        public string Test_Code { get; set; }
+        public string Description { get; set; }
     }
 
     public class SampleData
@@ -35,4 +37,5 @@ namespace CoCWebForm.Models
         public int MediaLotNumber { get; set; }
         public string SampleVol { get; set; }
     }
+
 }

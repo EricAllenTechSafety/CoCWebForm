@@ -31,13 +31,15 @@ namespace CoCWebForm.Controllers
             ServiceManagerContext _dbContext = new ServiceManagerContext();
             try // CO-BBC20090178D-01 : testing WorkOrder#
             {
+                _dbContext.Database.Connection.Open();
+
                 // Check EmailAddress for @ symbol
                 if (CustEmail.Contains('@')) 
                 {
                     // Check WorkOrder # against DB
                     var db_Order = (from orders in _dbContext.DAT_ORDERS
                                         where WorkOrderNum.Contains(orders.PROJECT_ID)
-                                        select orders).SingleOrDefault();
+                                        select orders).Single();
                     if (!ValidateWorkOrderNumber(WorkOrderNum, db_Order)) return View("Error");
 
                     // Check Email against email in DB with that WorkOrder
